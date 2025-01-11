@@ -14,6 +14,12 @@ if brand:
     with open("database.csv", "a") as f:
         f.write(brand + "\n")
     
+    # print all data
+    with open("database.csv", "r") as f:
+        data = f.readlines()
+
+    st.write(data)
+    
 
     st.write("Created by felix")
     st.write(brand)
