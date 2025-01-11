@@ -19,7 +19,9 @@ st.title("Text Detection from Image")
 st.write("Unggah gambar dan dapatkan teks yang terdeteksi dari gambar tersebut.")
 
 # Upload gambar
-guploaded_file = st.file_uploader("Unggah gambar Anda di sini", type=["jpg", "png", "jpeg"])
+# guploaded_file = st.file_uploader("Unggah gambar Anda di sini", type=["jpg", "png", "jpeg"])
+guploaded_file = st.camera_input("Silakan buka kamera anda...")
+
 
 if guploaded_file is not None:
     # Buka gambar menggunakan PIL
