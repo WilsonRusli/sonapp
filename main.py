@@ -9,4 +9,5 @@ t = st.color_picker("Hello")
 
 if brand:
     st.write("Teks anda adalah")
+    st.write("Created by felix")
     st.write(brand)
