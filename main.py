@@ -5,6 +5,10 @@ import pytesseract
 # Set konfigurasi Tesseract jika diperlukan
 # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
+# Set path ke binary Tesseract
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+
+
 def detect_text_from_image(image):
     """Fungsi untuk mendeteksi teks dari gambar menggunakan pytesseract."""
     text = pytesseract.image_to_string(image)
