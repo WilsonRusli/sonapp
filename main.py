@@ -9,5 +9,11 @@ t = st.color_picker("Hello")
 
 if brand:
     st.write("Teks anda adalah")
+    # save to database "database.csv"
+    
+    with open("database.csv", "a") as f:
+        f.write(brand + "\n")
+    
+
     st.write("Created by felix")
     st.write(brand)
