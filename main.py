@@ -62,6 +62,8 @@ if guploaded_file is not None:
     with st.spinner("Mendeteksi teks dari gambar..."):
         detected_text = detect_text_from_image(image)
 
+    detected_text = replace_text_with_numbers(detected_text)
+
     st.subheader("Teks yang Terdeteksi:")
     st.text_area("", detected_text, height=200)
 
