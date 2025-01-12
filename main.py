@@ -37,7 +37,7 @@ def replace_text_with_numbers(text):
         "MAYO FLOSS": "04890",
         "MELON BUN": "04811",
         "PANDAN KAYA": "26728",
-        "DOUGHTNAT GULA": "04933"
+        "DOUGHTNUT GULA": "04933"
         # Tambahkan pasangan teks dan angka lainnya di sini
     }
     for key, value in replacements.items():
