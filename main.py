@@ -55,3 +55,18 @@ if guploaded_file is not None:
         with open("detected_text.txt", "w", encoding="utf-8") as f:
             f.write(detected_text)
         st.success("Teks telah disimpan ke 'detected_text.txt'")
+
+        # Fungsi untuk mengganti teks tertentu dengan angka
+        def replace_text_with_numbers(text):
+            replacements = {
+                "BLACK MOON": "18191",
+                "CHOCO CHEESE": "29092",
+                "CHEESE BUN": "18204"
+                # Tambahkan pasangan teks dan angka lainnya di sini
+            }
+            for key, value in replacements.items():
+                text = text.replace(key, value)
+            return text
+
+        # Ganti teks yang terdeteksi dengan angka yang sesuai
+        detected_text = replace_text_with_numbers(detected_text)
