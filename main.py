@@ -22,6 +22,18 @@ st.write("Unggah gambar dan dapatkan teks yang terdeteksi dari gambar tersebut."
 guploaded_file = st.file_uploader("Unggah gambar Anda di sini", type=["jpg", "png", "jpeg"])
 guploaded_file_cam = st.camera_input("Silakan buka kamera anda...")
 
+# Fungsi untuk mengganti teks tertentu dengan angka
+def replace_text_with_numbers(text):
+    replacements = {
+        "BLACK MOON": "18191",
+        "CHOCO CHEESE": "29092",
+        "CHEESE BUN": "18204"
+        # Tambahkan pasangan teks dan angka lainnya di sini
+    }
+    for key, value in replacements.items():
+        text = text.replace(key, value)
+    return text
+
 if guploaded_file_cam is not None:
     # Buka gambar menggunakan PIL
     image = Image.open(guploaded_file_cam)
@@ -30,6 +42,8 @@ if guploaded_file_cam is not None:
     # Tampilkan teks yang terdeteksi
     with st.spinner("Mendeteksi teks dari gambar..."):
         detected_text = detect_text_from_image(image)
+
+    detected_text = replace_text_with_numbers(detected_text)
 
     st.subheader("Teks yang Terdeteksi:")
     st.text_area("", detected_text, height=200)
@@ -56,7 +70,7 @@ if guploaded_file is not None:
             f.write(detected_text)
         st.success("Teks telah disimpan ke 'detected_text.txt'")
 
-        # Fungsi untuk mengganti teks tertentu dengan angka
+# Fungsi untuk mengganti teks tertentu dengan angka
 def replace_text_with_numbers(text):
     replacements = {
         "BLACK MOON": "18191",
