@@ -27,7 +27,17 @@ def replace_text_with_numbers(text):
     replacements = {
         "BLACK MOON": "18191",
         "CHOCO CHEESE": "29092",
-        "CHEESE BUN": "18204"
+        "CHEESE BUN": "18204",
+        "COCONUT BUN": "18205",
+        "BURGER BUN @3 PCS": "30432",
+        "SANDWITCH 3 IN 1": "26691",
+        "TOAST 12": "18220",
+        "DOUGHNUT CERES": "18209",
+        "SOJU": "04844",
+        "MAYO FLOSS": "04890",
+        "MELON BUN": "04811",
+        "PANDAN KAYA": "26728",
+        "DOUGHTNAT GULA": "04933"
         # Tambahkan pasangan teks dan angka lainnya di sini
     }
     for key, value in replacements.items():
