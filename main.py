@@ -37,7 +37,7 @@ def replace_text_with_numbers(text):
 if guploaded_file_cam is not None:
     # Buka gambar menggunakan PIL
     image = Image.open(guploaded_file_cam)
-    st.image(image, caption="Gambar yang diunggah", use_column_width=True)
+    st.image(image, caption="Gambar yang diunggah", use_container_width=True)
 
     # Tampilkan teks yang terdeteksi
     with st.spinner("Mendeteksi teks dari gambar..."):
@@ -56,7 +56,7 @@ if guploaded_file_cam is not None:
 if guploaded_file is not None:
     # Buka gambar menggunakan PIL
     image = Image.open(guploaded_file)
-    st.image(image, caption="Gambar yang diunggah", use_column_width=True)
+    st.image(image, caption="Gambar yang diunggah", use_container_width=True)
 
     # Tampilkan teks yang terdeteksi
     with st.spinner("Mendeteksi teks dari gambar..."):
