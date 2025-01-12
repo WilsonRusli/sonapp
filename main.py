@@ -41,6 +41,8 @@ def replace_text_with_numbers(text):
         
         # Tambahkan pasangan teks dan angka lainnya di sini
     }
+    custom_config = r'--oem 3 --psm 6'
+    text = pytesseract.image_to_string(image, config=custom_config)
     for key, value in replacements.items():
         text = text.replace(key, value)
     return text
