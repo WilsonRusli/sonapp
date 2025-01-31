@@ -109,7 +109,7 @@ with tab2:
 }
         try:
             response = Request(genius_search_url, headers=headers)
-            response.raise_for_status()  # Raise an error for bad status codes
+            # response.raise_for_status()  # Raise an error for bad status codes
             json_data = urlopen(response).read()
 
             if 'response' in json_data and 'hits' in json_data['response']:
@@ -119,7 +119,7 @@ with tab2:
 
                     # Fetch the lyrics page
                     lyrics_response = Request(song_url, headers=headers)
-                    lyrics_response.raise_for_status()
+                    # lyrics_response.raise_for_status()
                     soup = BeautifulSoup(lyrics_response.text, 'html.parser')
 
                     # Find the lyrics
@@ -133,8 +133,8 @@ with tab2:
                     st.info("Tidak ada hasil ditemukan.")
             else:
                 st.error("Format respon tidak terduga")
-        except requests.exceptions.RequestException as e:
-            st.error(f"Error: {str(e)}")
+        # except requests.exceptions.RequestException as e:
+        #     st.error(f"Error: {str(e)}")
         except ValueError as e:
             st.error(f"Error parsing JSON: {str(e)}")
 
