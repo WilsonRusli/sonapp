@@ -108,6 +108,7 @@ with tab2:
 
         try:
             response = requests.get(genius_search_url)
+            st.write(response)
             response.raise_for_status()  # Raise an error for bad status codes
             json_data = response.json()
 
