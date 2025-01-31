@@ -133,3 +133,5 @@ with tab2:
             st.error(f"Error: {str(e)}")
         except ValueError as e:
             st.error(f"Error parsing JSON: {str(e)}")
+
+    fetch_lyric()
