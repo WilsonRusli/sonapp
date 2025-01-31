@@ -103,8 +103,7 @@ def fetch_lyric():
     genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
 
     headers = {
-        'Authorization': f'Bearer {GENIUS_API_KEY}',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+        'Authorization': f'Bearer {GENIUS_API_KEY}'
     }
 
     try:
