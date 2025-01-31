@@ -103,7 +103,9 @@ with tab2:
     def fetch_lyric():
         search_term = st.text_input("Masukkan nama lagu:")
         genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
-        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
+        headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
+}
         try:
             response = requests.get(genius_search_url, headers=headers)
             response.raise_for_status()  # Raise an error for bad status codes
