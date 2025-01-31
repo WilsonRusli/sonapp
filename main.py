@@ -107,9 +107,9 @@ with tab2:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
 }
         try:
-            response = requests.get(genius_search_url, headers=headers).json()
+            response = requests.get(genius_search_url, headers=headers)
             # response.raise_for_status()  # Raise an error for bad status codes
-            # json_data = response.json()
+            json_data = response.json()
 
             if 'response' in json_data and 'hits' in json_data['response']:
                 hits = json_data['response']['hits']
