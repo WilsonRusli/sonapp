@@ -105,12 +105,13 @@ with tab2:
         search_term = st.text_input("Masukkan nama lagu:")
         genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
         headers = {
-    "User-Agent": "Mozilla/5.0"
+    "Content-Type": "application/json",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
 }
         try:
-            response = Request(genius_search_url, headers=headers)
-            # response.raise_for_status()  # Raise an error for bad status codes
-            json_data = urlopen(response).read()
+            response = requests.get(genius_search_url, headers=headers)
+            response.raise_for_status()  # Raise an error for bad status codes
+            json_data = response.json()
 
             if 'response' in json_data and 'hits' in json_data['response']:
                 hits = json_data['response']['hits']
@@ -118,8 +119,8 @@ with tab2:
                     song_url = hits[0]['result']['url']
 
                     # Fetch the lyrics page
-                    lyrics_response = Request(song_url, headers=headers)
-                    # lyrics_response.raise_for_status()
+                    lyrics_response = requests.get(song_url, headers=headers)
+                    lyrics_response.raise_for_status()
                     soup = BeautifulSoup(lyrics_response.text, 'html.parser')
 
                     # Find the lyrics
@@ -133,8 +134,8 @@ with tab2:
                     st.info("Tidak ada hasil ditemukan.")
             else:
                 st.error("Format respon tidak terduga")
-        # except requests.exceptions.RequestException as e:
-        #     st.error(f"Error: {str(e)}")
+        except requests.exceptions.RequestException as e:
+            st.error(f"Error: {str(e)}")
         except ValueError as e:
             st.error(f"Error parsing JSON: {str(e)}")
 
