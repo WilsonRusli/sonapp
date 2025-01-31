@@ -110,7 +110,6 @@ with tab2:
             response = requests.get(genius_search_url, headers=headers)
             response.raise_for_status()  # Raise an error for bad status codes
             json_data = response.json()
-            print(json_data)
 
             if 'response' in json_data and 'hits' in json_data['response']:
                 hits = json_data['response']['hits']
