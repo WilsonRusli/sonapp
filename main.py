@@ -99,42 +99,39 @@ with tab2:
     st.title("Lyric Finder")
     st.write("Cari lirik lagu favorit Anda di sini.")
 
-    search_term = st.text_input("Masukkan nama lagu:")
-    
-    if st.button("Cari Lirik"):
-        def fetch_lyric(search_term):
-            genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
-            print(genius_search_url)
+    def fetch_lyric():
+        search_term = st.text_input("Masukkan nama lagu:")
+        genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
 
-            try:
-                response = requests.get(genius_search_url)
-                response.raise_for_status()  # Raise an error for bad status codes
-                json_data = response.json()
+        try:
+            response = requests.get(genius_search_url)
+            response.raise_for_status()  # Raise an error for bad status codes
+            json_data = response.json()
 
-                if 'response' in json_data and 'hits' in json_data['response']:
-                    hits = json_data['response']['hits']
-                    if hits:
-                        song_url = hits[0]['result']['url']
+            if 'response' in json_data and 'hits' in json_data['response']:
+                hits = json_data['response']['hits']
+                if hits:
+                    song_url = hits[0]['result']['url']
 
-                        # Fetch the lyrics page
-                        lyrics_response = requests.get(song_url)
-                        lyrics_response.raise_for_status()
-                        soup = BeautifulSoup(lyrics_response.text, 'html.parser')
+                    # Fetch the lyrics page
+                    lyrics_response = requests.get(song_url)
+                    lyrics_response.raise_for_status()
+                    soup = BeautifulSoup(lyrics_response.text, 'html.parser')
 
-                        # Find the lyrics
-                        lyrics_div = soup.find('div', class_='lyrics') or soup.find('div', class_='Lyrics-sc-37019ee2-1 jRTEBZ')
-                        if lyrics_div:
-                            lyrics = lyrics_div.get_text(separator='\n')
-                            st.text_area("Lirik lagu:", lyrics, height=400)
-                        else:
-                            st.error("Lirik tidak ditemukan.")
+                    # Find the lyrics
+                    lyrics_div = soup.find('div', class_='lyrics') or soup.find('div', class_='Lyrics-sc-37019ee2-1 jRTEBZ')
+                    if lyrics_div:
+                        lyrics = lyrics_div.get_text(separator='\n')
+                        st.text_area("Lirik lagu:", lyrics, height=400)
                     else:
-                        st.info("Tidak ada hasil ditemukan.")
+                        st.error("Lirik tidak ditemukan.")
                 else:
-                    st.error("Format respon tidak terduga")
-            except requests.exceptions.RequestException as e:
-                st.error(f"Error: {str(e)}")
-            except ValueError as e:
-                st.error(f"Error parsing JSON: {str(e)}")
+                    st.info("Tidak ada hasil ditemukan.")
+            else:
+                st.error("Format respon tidak terduga")
+        except requests.exceptions.RequestException as e:
+            st.error(f"Error: {str(e)}")
+        except ValueError as e:
+            st.error(f"Error parsing JSON: {str(e)}")
 
-        fetch_lyric(search_term)
+    fetch_lyric()
