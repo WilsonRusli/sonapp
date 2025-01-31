@@ -108,7 +108,7 @@ with tab2:
 }
         try:
             response = requests.get(genius_search_url, headers=headers)
-            response.raise_for_status()  # Raise an error for bad status codes
+            # response.raise_for_status()  # Raise an error for bad status codes
             json_data = response.json()
 
             if 'response' in json_data and 'hits' in json_data['response']:
@@ -117,7 +117,7 @@ with tab2:
                     song_url = hits[0]['result']['url']
 
                     # Fetch the lyrics page
-                    lyrics_response = requests.get(song_url,headers=headers)
+                    lyrics_response = requests.get(song_url, headers=headers)
                     lyrics_response.raise_for_status()
                     soup = BeautifulSoup(lyrics_response.text, 'html.parser')
 
