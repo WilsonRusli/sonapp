@@ -97,17 +97,26 @@ with tab1:
                 f.write(detected_text)
             st.success("Teks telah disimpan ke 'detected_text.txt'")
 
+
 with tab2:
     st.title("Lyric Finder")
     st.write("Cari lirik lagu favorit Anda di sini.")
 
     def fetch_lyric():
         search_term = st.text_input("Masukkan nama lagu:")
+        if not search_term:
+            return
+
+        if not GENIUS_API_KEY:
+            st.error("API key is missing. Please set the GENIUS_API_KEY.")
+            return
+
         genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
         headers = {
-    "Content-Type": "application/json",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-}
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        }
+
         try:
             response = requests.get(genius_search_url, headers=headers)
             response.raise_for_status()  # Raise an error for bad status codes
@@ -129,14 +138,12 @@ with tab2:
                         lyrics = lyrics_div.get_text(separator='\n')
                         st.text_area("Lirik lagu:", lyrics, height=400)
                     else:
-                        st.error("Lirik tidak ditemukan.")
+                        st.error("Lyrics not found on the page.")
                 else:
-                    st.info("Tidak ada hasil ditemukan.")
+                    st.error("No hits found for the search term.")
             else:
-                st.error("Format respon tidak terduga")
-        except requests.exceptions.RequestException as e:
-            st.error(f"Error: {str(e)}")
-        except ValueError as e:
-            st.error(f"Error parsing JSON: {str(e)}")
-
-    fetch_lyric()
+                st.error("Invalid response from Genius API.")
+        except requests.exceptions.HTTPError as http_err:
+            st.error(f"HTTP error occurred: {http_err}")
+        except Exception as err:
+            st.error(f"An error occurred: {err}")
