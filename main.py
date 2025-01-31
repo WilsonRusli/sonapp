@@ -118,7 +118,7 @@ with tab2:
 
                     # Fetch the lyrics page
                     lyrics_response = requests.get(song_url, headers=headers)
-                    lyrics_response.raise_for_status()
+                    # lyrics_response.raise_for_status()
                     soup = BeautifulSoup(lyrics_response.text, 'html.parser')
 
                     # Find the lyrics
