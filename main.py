@@ -147,3 +147,4 @@ with tab2:
             st.error(f"HTTP error occurred: {http_err}")
         except Exception as err:
             st.error(f"An error occurred: {err}")
+    fetch_lyric()
