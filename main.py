@@ -104,6 +104,7 @@ with tab2:
     if st.button("Cari Lirik"):
         def fetch_lyric(search_term):
             genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
+            print(genius_search_url)
 
             try:
                 response = requests.get(genius_search_url)
