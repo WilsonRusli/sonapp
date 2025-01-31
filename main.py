@@ -15,8 +15,6 @@ GENIUS_API_KEY = "heEvE7HHjU1NH4Sa9ma0it6mhpye593tSO5dsanbTzs_ZG8KPhcEQupaBZRBcJ
 if GENIUS_API_KEY is None:
     st.error("Genius API key not found. Please set the 'client_access_token' in the environment variables.")
 
-# Set konfigurasi Tesseract jika diperlukan
-# pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 # Set path ke binary Tesseract
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
@@ -105,9 +103,9 @@ with tab2:
     def fetch_lyric():
         search_term = st.text_input("Masukkan nama lagu:")
         genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
-
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'}
         try:
-            response = requests.get(genius_search_url)
+            response = requests.get(genius_search_url, headers=headers)
             response.raise_for_status()  # Raise an error for bad status codes
             json_data = response.json()
 
@@ -117,7 +115,7 @@ with tab2:
                     song_url = hits[0]['result']['url']
 
                     # Fetch the lyrics page
-                    lyrics_response = requests.get(song_url)
+                    lyrics_response = requests.get(song_url,headers=headers)
                     lyrics_response.raise_for_status()
                     soup = BeautifulSoup(lyrics_response.text, 'html.parser')
 
