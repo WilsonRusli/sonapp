@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv(dotenv_path='geniusAPI.env')
 
 # Get the Genius API key from environment variables
-GENIUS_API_KEY = os.getenv('client_access_token')
+GENIUS_API_KEY = "heEvE7HHjU1NH4Sa9ma0it6mhpye593tSO5dsanbTzs_ZG8KPhcEQupaBZRBcJ-G"
 
 # Set konfigurasi Tesseract jika diperlukan
 # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
