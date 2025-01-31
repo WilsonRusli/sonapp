@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 load_dotenv(dotenv_path='geniusAPI.env')
 
 # Get the Genius API key from environment variables
-GENIUS_API_KEY = os.getenv('client_access_token')
+GENIUS_API_KEY = "heEvE7HHjU1NH4Sa9ma0it6mhpye593tSO5dsanbTzs_ZG8KPhcEQupaBZRBcJ-G"
 
 if GENIUS_API_KEY is None:
     st.error("Genius API key not found. Please set the 'client_access_token' in the environment variables.")
@@ -98,43 +98,47 @@ with tab1:
                 f.write(detected_text)
             st.success("Teks telah disimpan ke 'detected_text.txt'")
 
+def fetch_lyric():
+    search_term = st.text_input("Masukkan nama lagu:")
+    genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
+
+    headers = {
+        'Authorization': f'Bearer {GENIUS_API_KEY}',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+    }
+
+    try:
+        response = requests.get(genius_search_url, headers=headers)
+        response.raise_for_status()  # Raise an error for bad status codes
+        json_data = response.json()
+
+        if 'response' in json_data and 'hits' in json_data['response']:
+            hits = json_data['response']['hits']
+            if hits:
+                song_url = hits[0]['result']['url']
+
+                # Fetch the lyrics page
+                lyrics_response = requests.get(song_url, headers=headers)
+                lyrics_response.raise_for_status()
+                soup = BeautifulSoup(lyrics_response.text, 'html.parser')
+
+                # Find the lyrics
+                lyrics_div = soup.find('div', class_='lyrics') or soup.find('div', class_='Lyrics-sc-37019ee2-1 jRTEBZ')
+                if lyrics_div:
+                    lyrics = lyrics_div.get_text(separator='\n')
+                    st.text_area("Lirik lagu:", lyrics, height=400)
+                else:
+                    st.error("Lirik tidak ditemukan.")
+            else:
+                st.error("Lagu tidak ditemukan.")
+        else:
+            st.error("Lagu tidak ditemukan.")
+    except requests.exceptions.HTTPError as http_err:
+        st.error(f"HTTP error occurred: {http_err}")
+    except Exception as err:
+        st.error(f"An error occurred: {err}")
+
 with tab2:
     st.title("Lyric Finder")
     st.write("Cari lirik lagu favorit Anda di sini.")
-
-    def fetch_lyric():
-        search_term = st.text_input("Masukkan nama lagu:")
-        genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
-
-        try:
-            response = requests.get(genius_search_url)
-            response.raise_for_status()  # Raise an error for bad status codes
-            json_data = response.json()
-
-            if 'response' in json_data and 'hits' in json_data['response']:
-                hits = json_data['response']['hits']
-                if hits:
-                    song_url = hits[0]['result']['url']
-
-                    # Fetch the lyrics page
-                    lyrics_response = requests.get(song_url)
-                    lyrics_response.raise_for_status()
-                    soup = BeautifulSoup(lyrics_response.text, 'html.parser')
-
-                    # Find the lyrics
-                    lyrics_div = soup.find('div', class_='lyrics') or soup.find('div', class_='Lyrics-sc-37019ee2-1 jRTEBZ')
-                    if lyrics_div:
-                        lyrics = lyrics_div.get_text(separator='\n')
-                        st.text_area("Lirik lagu:", lyrics, height=400)
-                    else:
-                        st.error("Lirik tidak ditemukan.")
-                else:
-                    st.info("Tidak ada hasil ditemukan.")
-            else:
-                st.error("Format respon tidak terduga")
-        except requests.exceptions.RequestException as e:
-            st.error(f"Error: {str(e)}")
-        except ValueError as e:
-            st.error(f"Error parsing JSON: {str(e)}")
-
     fetch_lyric()
