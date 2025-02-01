@@ -177,8 +177,8 @@ with tab2:
 
         # Define your proxy settings
         proxies = {
-            "http": "http://47.251.122.81:8888",
-            "https": "http://47.251.122.81:8888"
+            "http": "http://133.18.234.13:8888",
+            "https": "http://133.18.234.13:8888"
         }
 
         try:
