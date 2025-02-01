@@ -6,6 +6,7 @@ import os
 import json
 from dotenv import load_dotenv
 from urllib.request import Request, urlopen
+import urllib.request
 
 # Load environment variables from .env file
 load_dotenv(dotenv_path='geniusAPI.env')
@@ -113,7 +114,7 @@ with tab2:
 
         genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
         req = Request(genius_search_url, headers={"User-Agent": "Mozilla/5.0"})
-        response = urlopen(req)
+        response = urllib.request.urlopen(req)
         json_data = response.read().decode('utf-8')
 
         json_data = json.loads(json_data)
