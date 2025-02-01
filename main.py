@@ -178,7 +178,7 @@ with tab2:
         # Define your proxy settings
         proxies = {
             "http": "http://101.66.199.208:8085",
-            "https": "http://101.66.199.208:8085"
+            "https": "https://101.66.199.208:8085"
         }
 
         try:
