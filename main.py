@@ -129,8 +129,11 @@ with tab2:
                     song_url = hits[0]['result']['url']
 
                     # Fetch the lyrics page
-                    lyric_page = Request(song_url, headers=headers)
-                    st.write(f"URL lagu: {lyric_page}")
+                    lyric_page = Request(song_url, headers={
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Authorization": f"Bearer {GENIUS_API_KEY}"
+})
+                    st.write(f"URL lagu: {song_url}")
                     lyrics_response = urllib.request.urlopen(lyric_page)
 
                     html = lyrics_response.read().decode('utf-8')
