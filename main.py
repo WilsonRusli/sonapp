@@ -7,6 +7,7 @@ import json
 from dotenv import load_dotenv
 from urllib.request import Request, urlopen
 import urllib.request
+import time
 
 # Load environment variables from .env file
 load_dotenv(dotenv_path='geniusAPI.env')
@@ -104,7 +105,7 @@ with tab2:
     st.write("Cari lirik lagu favorit Anda di sini.")
 
     def fetch_lyric():
-        search_term = st.text_input("Masukkan nama lagu:")
+        search_term = st.text_input("Masukkan nama lagu:").replace(" ", "_")
         if not search_term:
             return
 
@@ -130,11 +131,10 @@ with tab2:
 
                     # Fetch the lyrics page
                     lyric_page = Request(song_url, headers={
-                        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-                        "Accept-Language": "en-US,en;q=0.9",
-                        "Referer": "https://genius.com/"
-                    })
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+})
                     st.write(f"URL lagu: {song_url}")
+                    time.sleep(5)
                     lyrics_response = urllib.request.urlopen(lyric_page)
 
                     html = lyrics_response.read().decode('utf-8')
