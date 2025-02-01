@@ -125,7 +125,7 @@ with tab2:
 
                 # Fetch the lyrics page
                 req = Request(song_url, headers={"User-Agent": "Mozilla/5.0"})
-                lyrics_response = urlopen(req)
+                lyrics_response = urllib.request.urlopen(req)
 
                 html = lyrics_response.read().decode('utf-8')
                 soup = BeautifulSoup(html, 'html.parser')
