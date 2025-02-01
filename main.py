@@ -129,8 +129,8 @@ with tab2:
                     song_url = hits[0]['result']['url']
 
                     # Fetch the lyrics page
-                    lyric_page = Request(song_url+"?format=json", headers=headers)
-                    st.write(f"URL lagu: {song_url}")
+                    lyric_page = Request(song_url, headers=headers)
+                    st.write(f"URL lagu: {lyric_page}")
                     lyrics_response = urllib.request.urlopen(lyric_page)
 
                     html = lyrics_response.read().decode('utf-8')
