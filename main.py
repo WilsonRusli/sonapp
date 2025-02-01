@@ -125,6 +125,7 @@ with tab2:
 
                 # Fetch the lyrics page
                 req = Request(song_url, headers={"User-Agent": "Mozilla/5.0"})
+                st.write(f"URL lagu: {song_url}")
                 lyrics_response = urllib.request.urlopen(req)
 
                 html = lyrics_response.read().decode('utf-8')
