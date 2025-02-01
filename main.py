@@ -146,7 +146,7 @@ with tab2:
                     else:
                         st.error("Lyrics not found on the page.")
         except urllib.error.HTTPError as e:
-            st.error(e)
+            print(e)
 
 
     fetch_lyric()
