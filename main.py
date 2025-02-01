@@ -145,6 +145,8 @@ with tab2:
                 st.error("Invalid response from Genius API.")
         except requests.exceptions.HTTPError as http_err:
             st.error(f"HTTP error occurred: {http_err}")
+            st.write(http_err.response.text)  # Log the response text for more details
         except Exception as err:
             st.error(f"An error occurred: {err}")
+            st.write(str(err))  # Log the error message for more details
     fetch_lyric()
