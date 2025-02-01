@@ -10,15 +10,6 @@ import requests
 import urllib.error
 import time
 
-# Load environment variables from .env file
-load_dotenv(dotenv_path="geniusAPI.env")
-
-# Get the Genius API key from environment variables
-GENIUS_API_KEY = os.getenv("client_access_token")
-
-if GENIUS_API_KEY is None:
-    st.error("Genius API key not found. Please set the 'client_access_token' in the environment variables.")
-
 
 # Set path ke binary Tesseract
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
@@ -102,6 +93,12 @@ with tab1:
 
 
 with tab2:
+    # Load environment variables from .env file
+    load_dotenv(dotenv_path="geniusAPI.env")
+
+    # Get the Genius API key from environment variables
+    GENIUS_API_KEY = os.getenv("client_access_token")
+    
     st.title("Lyric Finder")
     st.write("Cari lirik lagu favorit Anda di sini.")
 
