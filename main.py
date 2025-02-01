@@ -1,12 +1,11 @@
 import streamlit as st
 from PIL import Image
 import pytesseract
-import requests
 from bs4 import BeautifulSoup
 import os
 import json
 from dotenv import load_dotenv
-from urllib.request import urlopen, Request
+from urllib.request import Request, urlopen
 
 # Load environment variables from .env file
 load_dotenv(dotenv_path='geniusAPI.env')
