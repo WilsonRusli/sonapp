@@ -29,7 +29,7 @@ if search_term:
     if 'response' in json_response and 'hits' in json_response['response']:
         hits = json_response['response']['hits']
         if hits:
-            song_url = hits[0]['result']['url']
+            song_url = hits[0]['result']['relationships_index_url']
             print(f"Song URL: {song_url}")
         else:
             print("No results found.")
