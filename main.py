@@ -205,7 +205,10 @@ with tab2:
                 st.error("Invalid response from Genius API.")
         except httpx.exceptions.HTTPError as http_err:
             st.error(f"HTTP error occurred: {http_err}")
-            st.write(http_err.response.text)  # Log the response text for more details
+            if http_err.response is not None:
+                st.write(http_err.response.text)  # Log the response text for more details
+            else:
+                st.write("No response text available.")
         except Exception as err:
             st.error(f"An error occurred: {err}")
             st.write(str(err))  # Log the error message for more details
