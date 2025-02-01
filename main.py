@@ -145,8 +145,13 @@ with tab2:
                         st.text_area("Lirik lagu:", lyrics, height=400)
                     else:
                         st.error("Lyrics not found on the page.")
+                        
         except urllib.error.HTTPError as e:
-            print(e)
+            st.error(f"HTTPError: {e.code} - {e.reason}")
+        except urllib.error.URLError as e:
+            st.error(f"URLError: {e.reason}")
+        except Exception as e:
+            st.error(f"Unexpected error: {e}")
 
 
     fetch_lyric()
