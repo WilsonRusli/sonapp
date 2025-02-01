@@ -186,7 +186,10 @@ with tab2:
                     song_url = hits[0]['result']['url']
 
                     # Fetch the lyrics page
-                    lyrics_response = requests.get(song_url, headers=headers)
+                    session = requests.Session()
+                    session.headers.update(headers)
+
+                    lyrics_response = session.get(song_url, headers=headers)
                     lyrics_response.raise_for_status()
                     soup = BeautifulSoup(lyrics_response.text, 'html.parser')
 
