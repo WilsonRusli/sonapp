@@ -108,9 +108,6 @@ with tab2:
         if not search_term:
             return
 
-        if not GENIUS_API_KEY:
-            st.error("API key is missing. Please set the GENIUS_API_KEY.")
-            return
         headers = {
     "Content-Type": "application/json",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
