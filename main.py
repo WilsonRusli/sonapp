@@ -102,51 +102,23 @@ with tab2:
     st.title("Lyric Finder")
     st.write("Cari lirik lagu favorit Anda di sini.")
 
-    def fetch_lyric():
-        search_term = st.text_input("Masukkan nama lagu:")
-        if not search_term:
-            return
-
-        if not GENIUS_API_KEY:
-            st.error("API key is missing. Please set the GENIUS_API_KEY.")
-            return
-
+    search_term = st.text_input("Masukkan nama lagu:")
+    if search_term:
         genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
-        headers = {
-            "Content-Type": "application/json",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-        }
 
         try:
-            response = requests.get(genius_search_url, headers=headers)
-            response.raise_for_status()  # Raise an error for bad status codes
-            json_data = response.json()
+            req = Request(genius_search_url, headers={"User-Agent": "Mozilla/5.0"})
+            response = urlopen(req)
 
-            if 'response' in json_data and 'hits' in json_data['response']:
-                hits = json_data['response']['hits']
-                if hits:
-                    song_url = hits[0]['result']['url']
+            html = response.read().decode('utf-8')
+            soup = BeautifulSoup(html, 'html.parser')
 
-                    # Fetch the lyrics page
-                    lyrics_response = requests.get(song_url, headers=headers)
-                    lyrics_response.raise_for_status()
-                    soup = BeautifulSoup(lyrics_response.text, 'html.parser')
-
-                    # Find the lyrics
-                    lyrics_div = soup.find('div', class_='lyrics') or soup.find('div', class_='Lyrics-sc-37019ee2-1 jRTEBZ')
-                    if lyrics_div:
-                        lyrics = lyrics_div.get_text(separator='\n')
-                        st.text_area("Lirik lagu:", lyrics, height=400)
-                    else:
-                        st.error("Lyrics not found on the page.")
-                else:
-                    st.error("No hits found for the search term.")
+            lyrics_div = soup.find('div', class_='Lyrics-sc-37019ee2-1 jRTEBZ')
+            if lyrics_div:
+                lyrics = lyrics_div.get_text(separator='\n').strip()
+                st.subheader("Lirik yang Ditemukan:")
+                st.text_area("", lyrics, height=200)
             else:
-                st.error("Invalid response from Genius API.")
-        except requests.exceptions.HTTPError as http_err:
-            st.error(f"HTTP error occurred: {http_err}")
-            st.write(http_err.response.text)  # Log the response text for more details
-        except Exception as err:
-            st.error(f"An error occurred: {err}")
-            st.write(str(err))  # Log the error message for more details
-    fetch_lyric()
+                st.error("Lyrics not found")
+        except Exception as e:
+            st.error(f"Error fetching lyrics: {e}")
