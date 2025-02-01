@@ -4,6 +4,7 @@ import pytesseract
 import requests
 from bs4 import BeautifulSoup
 import os
+import json
 from dotenv import load_dotenv
 from urllib.request import urlopen, Request
 
@@ -112,16 +113,13 @@ with tab2:
             return
 
         genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
-        headers = {
-            "Content-Type": "application/json",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-        }
 
         try:
-            response = requests.get(genius_search_url, headers=headers)
-            response.raise_for_status()  # Raise an error for bad status codes
-            json_data = response.json()
+            req = Request(genius_search_url, headers={"User-Agent": "Mozilla/5.0"})
+            response = urlopen(req)
+            json_data = response.read().decode('utf-8')
 
+            json_data = json.loads(json_data)
             if 'response' in json_data and 'hits' in json_data['response']:
                 hits = json_data['response']['hits']
                 if hits:
@@ -134,7 +132,7 @@ with tab2:
                     html = lyrics_response.read().decode('utf-8')
                     soup = BeautifulSoup(html, 'html.parser')
 
-                    lyrics_div = soup.find('div', class_='Lyrics-sc-37019ee2-1 jRTEBZ')
+                    lyrics_div = soup.find('div', class_='lyrics') or soup.find('div', class_='Lyrics-sc-37019ee2-1 jRTEBZ')
                     if lyrics_div:
                         lyrics = lyrics_div.get_text(separator='\n').strip()
                         st.text_area("Lirik lagu:", lyrics, height=400)
