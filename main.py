@@ -14,7 +14,7 @@ import time
 load_dotenv(dotenv_path='geniusAPI.env')
 
 # Get the Genius API key from environment variables
-GENIUS_API_KEY = os.getenv("GENIUS_API_KEY")
+GENIUS_API_KEY = os.getenv("client_access_token")
 
 
 
