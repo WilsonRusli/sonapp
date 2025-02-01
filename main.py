@@ -102,23 +102,43 @@ with tab2:
     st.title("Lyric Finder")
     st.write("Cari lirik lagu favorit Anda di sini.")
 
-    search_term = st.text_input("Masukkan nama lagu:")
-    if search_term:
+    def fetch_lyric():
+        search_term = st.text_input("Masukkan nama lagu:")
+        if not search_term:
+            return
+
+        if not GENIUS_API_KEY:
+            st.error("API key is missing. Please set the GENIUS_API_KEY.")
+            return
+
         genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
+        headers = {
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        }
 
         try:
-            req = Request(genius_search_url, headers={"User-Agent": "Mozilla/5.0"})
-            response = urlopen(req)
+            response = requests.get(genius_search_url, headers=headers)
+            response.raise_for_status()  # Raise an error for bad status codes
+            json_data = response.json()
 
-            html = response.read().decode('utf-8')
-            soup = BeautifulSoup(html, 'html.parser')
+            if 'response' in json_data and 'hits' in json_data['response']:
+                hits = json_data['response']['hits']
+                if hits:
+                    song_url = hits[0]['result']['url']
 
-            lyrics_div = soup.find('div', class_='Lyrics-sc-37019ee2-1 jRTEBZ')
-            if lyrics_div:
-                lyrics = lyrics_div.get_text(separator='\n').strip()
-                st.subheader("Lirik yang Ditemukan:")
-                st.text_area("", lyrics, height=200)
-            else:
-                st.error("Lyrics not found")
+                    # Fetch the lyrics page
+                    req = Request(song_url, headers={"User-Agent": "Mozilla/5.0"})
+                    lyrics_response = urlopen(req)
+
+                    html = lyrics_response.read().decode('utf-8')
+                    soup = BeautifulSoup(html, 'html.parser')
+
+                    lyrics_div = soup.find('div', class_='Lyrics-sc-37019ee2-1 jRTEBZ')
+                    if lyrics_div:
+                        lyrics = lyrics_div.get_text(separator='\n').strip()
+                        st.text_area("Lirik lagu:", lyrics, height=400)
+                    else:
+                        st.error("Lyrics not found on the page.")
         except Exception as e:
-            st.error(f"Error fetching lyrics: {e}")
+            print(f"Error fetching lyrics: {e}")
