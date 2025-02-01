@@ -11,10 +11,10 @@ import urllib.error
 import time
 
 # Load environment variables from .env file
-load_dotenv(dotenv_path='geniusAPI.env')
+load_dotenv()
 
 # Get the Genius API key from environment variables
-GENIUS_API_KEY = os.getenv("client_access_token")
+GENIUS_API_KEY = "heEvE7HHjU1NH4Sa9ma0it6mhpye593tSO5dsanbTzs_ZG8KPhcEQupaBZRBcJ-G"
 print(GENIUS_API_KEY)
 
 if GENIUS_API_KEY is None:
@@ -114,12 +114,9 @@ with tab2:
         if not GENIUS_API_KEY:
             st.error("API key is missing. Please set the GENIUS_API_KEY.")
             return
-        headers = {
-    "Content-Type": "application/json",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-}
+        headers = req.headers
         genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
-        req = Request(genius_search_url, headers={"User-Agent": "Mozilla/5.0"})
+        req = Request(genius_search_url, headers=headers)
 
         try:
             response = urllib.request.urlopen(req)
@@ -132,9 +129,7 @@ with tab2:
                     song_url = hits[0]['result']['url']
 
                     # Fetch the lyrics page
-                    lyric_page = Request(song_url, headers={
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-})
+                    lyric_page = Request(song_url, headers=headers)
                     st.write(f"URL lagu: {song_url}")
                     time.sleep(5)
                     lyrics_response = urllib.request.urlopen(lyric_page)
