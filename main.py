@@ -119,7 +119,7 @@ with tab2:
         req = Request(genius_search_url, headers={"User-Agent": "Mozilla/5.0"})
 
         try:
-            response = urllib.request.urlopen(req)
+            response = urllib.request.urlopen(req).read()
             json_data = response.read().decode('utf-8')
 
             json_data = json.loads(json_data)
@@ -134,7 +134,7 @@ with tab2:
     "Authorization": f"Bearer {GENIUS_API_KEY}"
 })
                     st.write(f"URL lagu: {song_url}")
-                    lyrics_response = urllib.request.urlopen(lyric_page)
+                    lyrics_response = urllib.request.urlopen(lyric_page).read()
 
                     html = lyrics_response.read().decode('utf-8')
                     soup = BeautifulSoup(html, 'html.parser')
