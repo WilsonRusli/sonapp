@@ -141,6 +141,6 @@ with tab2:
                     else:
                         st.error("Lyrics not found on the page.")
         except Exception as e:
-            print(f"Error fetching lyrics: {e}")
+            st.error(f"Error fetching lyrics: {e}")
 
     fetch_lyric()
