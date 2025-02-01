@@ -7,6 +7,8 @@ import json
 from dotenv import load_dotenv
 from urllib.request import Request, urlopen
 import requests
+import urllib.error
+import time
 
 # Load environment variables from .env file
 load_dotenv(dotenv_path='geniusAPI.env')
