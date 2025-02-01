@@ -6,9 +6,7 @@ import os
 import json
 from dotenv import load_dotenv
 from urllib.request import Request, urlopen
-import urllib.request
-import time
-import httpx
+import requests
 
 # Load environment variables from .env file
 load_dotenv(dotenv_path='geniusAPI.env')
@@ -178,7 +176,7 @@ with tab2:
         }
 
         try:
-            response = httpx.get(genius_search_url, headers=headers)
+            response = requests.get(genius_search_url, headers=headers)
             response.raise_for_status()  # Raise an error for bad status codes
             json_data = response.json()
 
@@ -188,7 +186,7 @@ with tab2:
                     song_url = hits[0]['result']['url']
 
                     # Fetch the lyrics page
-                    lyrics_response = httpx.get(song_url, headers=headers)
+                    lyrics_response = requests.get(song_url, headers=headers)
                     lyrics_response.raise_for_status()
                     soup = BeautifulSoup(lyrics_response.text, 'html.parser')
 
@@ -203,6 +201,9 @@ with tab2:
                     st.error("No hits found for the search term.")
             else:
                 st.error("Invalid response from Genius API.")
+        except requests.exceptions.HTTPError as http_err:
+            st.error(f"HTTP error occurred: {http_err}")
+            st.write(http_err.response.text)  # Log the response text for more details
         except Exception as err:
             st.error(f"An error occurred: {err}")
             st.write(str(err))  # Log the error message for more details
