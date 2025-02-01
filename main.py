@@ -126,10 +126,10 @@ with tab2:
             if 'response' in json_data and 'hits' in json_data['response']:
                 hits = json_data['response']['hits']
                 if hits:
-                    song_url = hits[0]['result']['relationships_index_url']
+                    song_url = hits[0]['result']['url']
 
                     # Fetch the lyrics page
-                    lyric_page = Request(song_url, headers=headers)
+                    lyric_page = Request(song_url+"?format=json", headers=headers)
                     st.write(f"URL lagu: {song_url}")
                     lyrics_response = urllib.request.urlopen(lyric_page)
 
