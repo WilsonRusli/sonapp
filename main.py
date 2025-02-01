@@ -16,6 +16,8 @@ load_dotenv(dotenv_path='geniusAPI.env')
 # Get the Genius API key from environment variables
 GENIUS_API_KEY = os.getenv("client_access_token")
 
+if GENIUS_API_KEY is None:
+    st.error("Genius API key not found. Please set the 'client_access_token' in the environment variables.")
 
 
 # Set path ke binary Tesseract
@@ -108,6 +110,9 @@ with tab2:
         if not search_term:
             return
 
+        if not GENIUS_API_KEY:
+            st.error("API key is missing. Please set the GENIUS_API_KEY.")
+            return
         headers = {
     "Content-Type": "application/json",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
