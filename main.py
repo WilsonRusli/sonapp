@@ -134,7 +134,7 @@ with tab2:
     "Authorization": f"Bearer {GENIUS_API_KEY}"
 })
                     st.write(f"URL lagu: {song_url}")
-                    lyrics_response = urllib.request.urlopen(lyric_page)
+                    lyrics_response = urllib.request.urlopen(lyric_page, headers=headers)
 
                     html = lyrics_response.read().decode('utf-8')
                     soup = BeautifulSoup(html, 'html.parser')
