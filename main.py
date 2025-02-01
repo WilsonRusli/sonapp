@@ -203,12 +203,15 @@ with tab2:
                     st.error("No hits found for the search term.")
             else:
                 st.error("Invalid response from Genius API.")
-        except httpx.exceptions.HTTPError as http_err:
+        except httpx.HTTPStatusError as http_err:
             st.error(f"HTTP error occurred: {http_err}")
             if http_err.response is not None:
                 st.write(http_err.response.text)  # Log the response text for more details
             else:
                 st.write("No response text available.")
+        except httpx.RequestError as req_err:
+            st.error(f"Request error occurred: {req_err}")
+            st.write(str(req_err))  # Log the error message for more details
         except Exception as err:
             st.error(f"An error occurred: {err}")
             st.write(str(err))  # Log the error message for more details
