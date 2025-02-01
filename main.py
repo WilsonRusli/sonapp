@@ -175,12 +175,6 @@ with tab2:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
 
-        # Define your proxy settings
-        proxies = {
-            "http": "http://47.251.122.81:8888",
-            "https": "http://47.251.122.81:8888"
-        }
-
         try:
             response = requests.get(genius_search_url, headers=headers)
             response.raise_for_status()  # Raise an error for bad status codes
@@ -195,7 +189,7 @@ with tab2:
                     session = requests.Session()
                     session.headers.update(headers)
 
-                    lyrics_response = session.get(song_url, headers=headers, proxies=proxies)
+                    lyrics_response = session.get(song_url, headers=headers)
                     lyrics_response.raise_for_status()
                     soup = BeautifulSoup(lyrics_response.text, 'html.parser')
 
