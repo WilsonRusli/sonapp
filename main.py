@@ -111,11 +111,12 @@ with tab2:
             st.error("API key is missing. Please set the GENIUS_API_KEY.")
             return
         headers = {
-    "Content-Type": "application/json",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-}
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+            "Access-Control-Allow-Origin": "*"
+        }
         genius_search_url = f"http://api.genius.com/search?q={search_term}&access_token={GENIUS_API_KEY}"
-        req = Request(genius_search_url, headers={"User-Agent": "Mozilla/5.0"})
+        req = Request(genius_search_url, headers=headers)
 
         try:
             response = urllib.request.urlopen(req)
@@ -128,9 +129,7 @@ with tab2:
                     song_url = hits[0]['result']['url']
 
                     # Fetch the lyrics page
-                    lyric_page = Request(song_url, headers={
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-})
+                    lyric_page = Request(song_url, headers=headers)
                     st.write(f"URL lagu: {song_url}")
                     time.sleep(1)
                     lyrics_response = urllib.request.urlopen(lyric_page)
@@ -151,8 +150,7 @@ with tab2:
             st.error(f"URLError: {e.reason}")
         except Exception as e:
             st.error(f"Unexpected error: {e}")
-
-
+            
     fetch_lyric()
 
 # with tab2:
