@@ -219,14 +219,14 @@ with tab3:
         st.stop()
     st.title("Audio to Text")
     st.write("Unggah file audio dan dapatkan teks yang terdeteksi dari audio tersebut.")
-    uploaded_file = st.file_uploader("Unggah file audio Anda di sini", type=["mp3", "wav", "m4a"])
+    uploaded_file = st.file_uploader("Unggah file audio Anda di sini", type=["mp3", "wav", "m4a", "opus"])
     if uploaded_file is not None:
         # Simpan file audio sementara
         with open("temp_audio", "wb") as f:
             f.write(uploaded_file.getbuffer())
 
         # Tampilkan file audio
-        st.audio(uploaded_file, format="audio/wav")
+        st.audio(uploaded_file, format="audio/opus")
 
         # Proses audio untuk mendapatkan teks
         with st.spinner("Mendeteksi teks dari audio..."):
