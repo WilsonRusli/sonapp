@@ -9,12 +9,13 @@ from urllib.request import Request, urlopen
 import requests
 import urllib.error
 import time
+import whisper
 
 
 # Set path ke binary Tesseract
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
-tab1, tab2 = st.tabs(["Picture to Text", "Lyric Finder"])
+tab1, tab2, tab3 = st.tabs(["Picture to Text", "Lyric Finder", "Audio to Text"])
 
 with tab1:
     def detect_text_from_image(image):
@@ -209,4 +210,36 @@ with tab2:
 #             st.write(str(err))  # Log the error message for more details
 
 #     fetch_lyric()
+
+with tab3:
+    model = whisper.load_model("base")
+    st.title("Audio to Text")
+    st.write("Unggah file audio dan dapatkan teks yang terdeteksi dari audio tersebut.")
+    uploaded_file = st.file_uploader("Unggah file audio Anda di sini", type=["mp3", "wav", "m4a"])
+    if uploaded_file is not None:
+        # Simpan file audio sementara
+        with open("temp_audio", "wb") as f:
+            f.write(uploaded_file.getbuffer())
+
+        # Tampilkan file audio
+        st.audio(uploaded_file, format="audio/wav")
+
+        # Proses audio untuk mendapatkan teks
+        with st.spinner("Mendeteksi teks dari audio..."):
+            result = model.transcribe("temp_audio")
+            detected_text = result["text"]
+
+        # Tampilkan teks yang terdeteksi
+        st.subheader("Teks yang Terdeteksi:")
+        st.text_area("", detected_text, height=200)
+
+        if st.button("Simpan teks ke file"):
+            with open("detected_text.txt", "w", encoding="utf-8") as f:
+                f.write(detected_text)
+            st.success("Teks telah disimpan ke 'detected_text.txt'")
+
+        # Hapus file audio sementara
+        os.remove("temp_audio")
+        st.success("File audio sementara telah dihapus.")
+
 
