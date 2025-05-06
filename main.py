@@ -212,15 +212,21 @@ with tab2:
 #     fetch_lyric()
 
 with tab3:
-    model = whisper.load_model("base")
+    try:
+        model = whisper.load_model("base")
+    except Exception as e:
+        st.error(f"Error loading Whisper model: {e}")
+        st.stop()
+
     st.title("Audio to Text")
     st.write("Unggah file audio dan dapatkan teks yang terdeteksi dari audio tersebut.")
     uploaded_file = st.file_uploader("Unggah file audio Anda di sini", type=["mp3", "wav", "m4a"])
     if uploaded_file is not None:
-        # Simpan file audio sementara
-        with open("temp_audio", "wb") as f:
+        # Simpan file audio sementara dengan ekstensi yang sesuai
+        temp_audio_path = "temp_audio." + uploaded_file.name.split(".")[-1]
+        with open(temp_audio_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
-
+            result = model.transcribe(temp_audio_path)
         # Tampilkan file audio
         st.audio(uploaded_file, format="audio/wav")
 
@@ -233,10 +239,10 @@ with tab3:
         st.subheader("Teks yang Terdeteksi:")
         st.text_area("", detected_text, height=200)
 
-        if st.button("Simpan teks ke file"):
-            with open("detected_text.txt", "w", encoding="utf-8") as f:
-                f.write(detected_text)
-            st.success("Teks telah disimpan ke 'detected_text.txt'")
+        os.remove(temp_audio_path)
+        with open("detected_text.txt", "w", encoding="utf-8") as f:
+            f.write(detected_text)
+        st.success("Teks telah disimpan ke 'detected_text.txt'")
 
         # Hapus file audio sementara
         os.remove("temp_audio")
