@@ -212,11 +212,7 @@ with tab2:
 #     fetch_lyric()
 
 with tab3:
-    try:
-        model = whisper.load_model("base")
-    except Exception as e:
-        st.error(f"Error loading Whisper model: {e}")
-        st.stop()
+    model = whisper.load_model("base")
     st.title("Audio to Text")
     st.write("Unggah file audio dan dapatkan teks yang terdeteksi dari audio tersebut.")
     uploaded_file = st.file_uploader("Unggah file audio Anda di sini", type=["mp3", "wav", "m4a"])
@@ -226,12 +222,8 @@ with tab3:
             f.write(uploaded_file.getbuffer())
 
         # Tampilkan file audio
-            try:
-                result = model.transcribe("temp_audio")
-                detected_text = result["text"]
-            except Exception as e:
-                st.error(f"Error during transcription: {e}")
-                st.stop()
+        st.audio(uploaded_file, format="audio/wav")
+
         # Proses audio untuk mendapatkan teks
         with st.spinner("Mendeteksi teks dari audio..."):
             result = model.transcribe("temp_audio")
