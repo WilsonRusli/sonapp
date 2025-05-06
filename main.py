@@ -212,6 +212,7 @@ with tab2:
 #     fetch_lyric()
 
 with tab3:
+    print(whisper.__file__)
     model = whisper.load_model("base")
     st.title("Audio to Text")
     st.write("Unggah file audio dan dapatkan teks yang terdeteksi dari audio tersebut.")
